@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>neovida — Скоро</title>
+<meta name="description" content="neovida — экзоскелет для бизнеса. Мы строим что-то невероятное!">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: linear-gradient(135deg, #faf5f0 0%, #f0e8e0 50%, #ede4f5 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Облака */
+  .clouds {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 200px;
+    pointer-events: none;
+  }
+
+  .cloud {
+    position: absolute;
+    background: rgba(255,255,255,0.7);
+    border-radius: 50px;
+    animation: cloud-drift linear infinite;
+  }
+
+  .cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: inherit;
+    border-radius: 50%;
+  }
+
+  .cloud:nth-child(1) {
+    width: 120px; height: 40px; top: 30px;
+    animation-duration: 25s;
+  }
+  .cloud:nth-child(1)::before { width: 50px; height: 50px; top: -25px; left: 20px; }
+  .cloud:nth-child(1)::after { width: 35px; height: 35px; top: -15px; left: 60px; }
+
+  .cloud:nth-child(2) {
+    width: 90px; height: 30px; top: 70px;
+    animation-duration: 35s; animation-delay: -10s;
+  }
+  .cloud:nth-child(2)::before { width: 40px; height: 40px; top: -20px; left: 15px; }
+  .cloud:nth-child(2)::after { width: 25px; height: 25px; top: -10px; left: 45px; }
+
+  .cloud:nth-child(3) {
+    width: 100px; height: 35px; top: 110px;
+    animation-duration: 30s; animation-delay: -20s;
+  }
+  .cloud:nth-child(3)::before { width: 45px; height: 45px; top: -22px; left: 18px; }
+  .cloud:nth-child(3)::after { width: 30px; height: 30px; top: -12px; left: 55px; }
+
+  @keyframes cloud-drift {
+    from { left: -200px; }
+    to { left: calc(100% + 200px); }
+  }
+
+  /* Контент */
+  .content {
+    text-align: center;
+    z-index: 2;
+    padding: 2rem;
+  }
+
+  /* Лого — точно как logo.png: neovida + коралловый элемент справа внизу */
+  .logo {
+    display: inline-flex;
+    align-items: baseline;
+    animation: bounce-in 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .logo-text {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: #1a1a2e;
+    letter-spacing: -0.02em;
+  }
+
+  .logo-mark {
+    display: inline-block;
+    width: 20px;
+    height: 7px;
+    background: #E07461;
+    border-radius: 2px;
+    margin-left: 3px;
+    position: relative;
+    top: 2px;
+  }
+
+  @keyframes bounce-in {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* Строительная площадка */
+  .construction-site {
+    margin: 2.5rem auto;
+    width: 340px;
+    height: 200px;
+    position: relative;
+  }
+
+  /* Кран — башенный */
+  .crane {
+    position: absolute;
+    left: 15px;
+    bottom: 4px;
+  }
+
+  /* Мачта */
+  .crane-mast {
+    width: 6px;
+    height: 150px;
+    background: #E07461;
+    border-radius: 2px;
+    position: relative;
+  }
+
+  .crane-mast::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 1px;
+    width: 4px;
+    height: 135px;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 8px,
+      rgba(255,255,255,0.35) 8px,
+      rgba(255,255,255,0.35) 10px
+    );
+  }
+
+  /* Стрела горизонтальная наверху */
+  .crane-jib {
+    width: 180px;
+    height: 4px;
+    background: #E07461;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 2px;
+  }
+
+  /* Тросы от верха мачты к стреле (растяжки) */
+  .crane-jib::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 3px;
+    width: 80px;
+    height: 1px;
+    background: #cc6354;
+    transform: rotate(12deg);
+    transform-origin: left center;
+  }
+
+  .crane-jib::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 3px;
+    width: 140px;
+    height: 1px;
+    background: #cc6354;
+    transform: rotate(7deg);
+    transform-origin: left center;
+  }
+
+  /* Трос с блоком — верёвка укорачивается, блок поднимается вместе с ней */
+  .crane-cable {
+    width: 1.5px;
+    background: #999;
+    position: absolute;
+    top: 0;
+    left: 140px;
+    transform-origin: top center;
+    animation: cable-lift 4s ease-in-out infinite;
+  }
+
+  @keyframes cable-lift {
+    0%, 100% { height: 100px; }
+    50% { height: 50px; }
+  }
+
+  /* Блок на тросе — AI-блок, золотой */
+  .crane-load {
+    width: 40px;
+    height: 32px;
+    background: #F5B731;
+    border-radius: 4px;
+    position: absolute;
+    bottom: -32px;
+    left: -19px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 8px rgba(245,183,49,0.3);
+  }
+
+  /* Блоки-кирпичи */
+  .blocks {
+    position: absolute;
+    bottom: 4px;
+    right: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 30px);
+    gap: 3px;
+  }
+
+  .block {
+    width: 30px;
+    height: 18px;
+    border-radius: 2px;
+    animation: block-drop 0.6s cubic-bezier(0.68, -0.3, 0.265, 1.2) both;
+  }
+
+  .block:nth-child(1) { background: #E07461; animation-delay: 0.5s; }
+  .block:nth-child(2) { background: #d4694e; animation-delay: 0.8s; }
+  .block:nth-child(3) { background: #E07461; animation-delay: 1.1s; }
+  .block:nth-child(4) { background: #c95e44; animation-delay: 1.4s; }
+  .block:nth-child(5) { background: #8B6EB5; animation-delay: 1.7s; }
+  .block:nth-child(6) { background: #7d63a3; animation-delay: 2.0s; }
+  .block:nth-child(7) { background: #8B6EB5; animation-delay: 2.3s; }
+  .block:nth-child(8) { background: #9a7ec4; animation-delay: 2.6s; }
+  .block:nth-child(9) { background: #E07461; animation-delay: 2.9s; }
+  .block:nth-child(10) { background: #d4694e; animation-delay: 3.2s; }
+  .block:nth-child(11) { background: #E07461; animation-delay: 3.5s; }
+  .block:nth-child(12) { background: #c95e44; animation-delay: 3.8s; }
+
+  @keyframes block-drop {
+    0% { transform: translateY(-60px) rotate(8deg); opacity: 0; }
+    60% { transform: translateY(4px) rotate(-2deg); opacity: 1; }
+    80% { transform: translateY(-2px) rotate(1deg); }
+    100% { transform: translateY(0) rotate(0); opacity: 1; }
+  }
+
+  /* Рабочий — ходит по верху кубиков */
+  .worker {
+    position: absolute;
+    bottom: 64px;
+    right: 25px;
+    animation: worker-patrol 8s ease-in-out infinite;
+  }
+
+  .worker-body {
+    width: 14px;
+    height: 18px;
+    background: #E07461;
+    border-radius: 3px 3px 0 0;
+    position: relative;
+  }
+
+  .worker-head {
+    width: 12px;
+    height: 12px;
+    background: #f5c6a0;
+    border-radius: 50%;
+    position: absolute;
+    top: -10px;
+    left: 1px;
+  }
+
+  .worker-hat {
+    width: 16px;
+    height: 6px;
+    background: #f5c542;
+    border-radius: 3px 3px 0 0;
+    position: absolute;
+    top: -15px;
+    left: -1px;
+  }
+
+  .worker-legs {
+    display: flex;
+    gap: 3px;
+  }
+
+  .worker-leg {
+    width: 5px;
+    height: 12px;
+    background: #3a3a5c;
+    border-radius: 0 0 2px 2px;
+  }
+
+  .worker-leg:first-child { animation: leg-walk 0.8s ease-in-out infinite; }
+  .worker-leg:last-child { animation: leg-walk 0.8s ease-in-out infinite 0.4s; }
+
+  /* Руки */
+  .worker-arms {
+    position: absolute;
+    top: 2px;
+    left: -5px;
+    width: 24px;
+    height: 12px;
+  }
+
+  .worker-arm {
+    width: 4px;
+    height: 12px;
+    background: #f5c6a0;
+    border-radius: 2px;
+    position: absolute;
+    top: 0;
+    transform-origin: top center;
+  }
+
+  .worker-arm:first-child {
+    left: 0;
+    animation: arm-swing 1.2s ease-in-out infinite;
+  }
+
+  .worker-arm:last-child {
+    right: 0;
+    animation: arm-swing 1.2s ease-in-out infinite 0.6s;
+  }
+
+  @keyframes arm-swing {
+    0%, 100% { transform: rotate(-15deg); }
+    50% { transform: rotate(15deg); }
+  }
+
+  @keyframes leg-walk {
+    0%, 100% { transform: rotate(-8deg); }
+    50% { transform: rotate(8deg); }
+  }
+
+  @keyframes worker-patrol {
+    0%, 100% { transform: translateX(0) scaleX(-1); }
+    45% { transform: translateX(-110px) scaleX(-1); }
+    50% { transform: translateX(-110px) scaleX(1); }
+    95% { transform: translateX(0) scaleX(1); }
+  }
+
+  /* Земля */
+  .ground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E07461, #8B6EB5, #E07461);
+    border-radius: 2px;
+  }
+
+  /* Текст */
+  .message {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-top: 1rem;
+    animation: fade-up 1s ease-out 0.5s both;
+  }
+
+  .message-sub {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: #666;
+    margin-top: 0.5rem;
+    animation: fade-up 1s ease-out 0.8s both;
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Прогресс */
+  .progress-section {
+    margin-top: 2rem;
+    animation: fade-up 1s ease-out 1.1s both;
+  }
+
+  .progress-container {
+    width: 260px;
+    height: 24px;
+    background: rgba(0,0,0,0.06);
+    border-radius: 12px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #E07461, #8B6EB5);
+    border-radius: 12px;
+    animation: progress-grow 2.5s ease-out 1.5s both;
+    position: relative;
+  }
+
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 2s ease-in-out infinite;
+  }
+
+  @keyframes progress-grow {
+    from { width: 0; }
+    to { width: 68%; }
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+  }
+
+  .progress-text {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    opacity: 0.5;
+  }
+
+  /* Футер */
+  .footer {
+    position: fixed;
+    bottom: 1.5rem;
+    font-size: 0.75rem;
+    color: rgba(0,0,0,0.2);
+    letter-spacing: 0.05em;
+  }
+
+  /* Адаптив */
+  @media (max-width: 480px) {
+    .logo-text { font-size: 2rem; }
+    .logo-mark { width: 14px; height: 5px; }
+    .construction-site { width: 280px; transform: scale(0.85); }
+    .message { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="clouds">
+  <div class="cloud"></div>
+  <div class="cloud"></div>
+  <div class="cloud"></div>
+</div>
+
+<div class="content">
+  <div class="logo">
+    <span class="logo-text">neovida</span><span class="logo-mark"></span>
+  </div>
+
+  <div class="construction-site">
+    <!-- Кран -->
+    <div class="crane">
+      <div class="crane-mast">
+        <div class="crane-jib"></div>
+        <div class="crane-cable">
+          <div class="crane-load">AI</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Рабочий — ходит по кубикам туда-сюда -->
+    <div class="worker">
+      <div class="worker-hat"></div>
+      <div class="worker-head"></div>
+      <div class="worker-body">
+        <div class="worker-arms">
+          <div class="worker-arm"></div>
+          <div class="worker-arm"></div>
+        </div>
+      </div>
+      <div class="worker-legs">
+        <div class="worker-leg"></div>
+        <div class="worker-leg"></div>
+      </div>
+    </div>
+
+    <!-- Блоки -->
+    <div class="blocks">
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+      <div class="block"></div>
+    </div>
+
+    <div class="ground"></div>
+  </div>
+
+  <div class="message">Мы строим что-то невероятное!</div>
+  <div class="message-sub">Совсем скоро.</div>
+
+  <div class="progress-section">
+    <div class="progress-container">
+      <div class="progress-fill"></div>
+      <div class="progress-text">68%</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">© 2026 neovida</div>
+
+</body>
+</html>
